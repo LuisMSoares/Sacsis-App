@@ -5,21 +5,45 @@ import {
   FlatList,
   StyleSheet,
   Dimensions,
+  TouchableOpacity,
+  Alert,
 } from 'react-native';
 
 class ScheduleScreen extends Component {
+  state = {
+    data: [
+      {
+        title: 'Introdução ao LaTeX',
+        locate: 'PVA226',
+        hourStart: '14:00',
+        hourFinish: '15:40',
+      },
+      {
+        title: 'Introdução ao Git',
+        locate: 'PVA226',
+        hourStart: '16:00',
+        hourFinish: '17:40',
+      },
+    ],
+  };
+
   render() {
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <FlatList
-          data={[{ key: 'a' }, { key: 'b' }]}
+          data={this.state.data}
           renderItem={({ item }) => (
-            <View style={styles.flatlist}>
-              <Text>{item.key}</Text>
-              <Text>
-                Local: {item.key}    Horário: {item.key} - {item.key}
+            <TouchableOpacity 
+              style={styles.flatlist}
+              onPress={() => this.props.navigation.navigate('ScheduleDetailsScreen',{title: item.title})}
+            >
+              <Text style={styles.itemTitle}>
+                {item.title}
               </Text>
-            </View>
+              <Text style={styles.itemDetails}>
+                Local: {item.locate}    Horário: {item.hourStart} - {item.hourFinish}
+              </Text>
+            </TouchableOpacity>
           )}
         />
       </View>
@@ -36,5 +60,11 @@ const styles = StyleSheet.create({
     borderBottomColor: '#00000036',
     borderBottomWidth: 3,
     alignSelf: 'stretch',
+  },
+  itemTitle: {
+    fontSize: 16
+  },
+  itemDetails: {
+    fontSize: 12
   },
 });

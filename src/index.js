@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Button, Alert } from 'react-native';
+import { View, Alert } from 'react-native';
 import Icon from '@expo/vector-icons/Ionicons';
 
 import LoginScreen from './pages/login';
 import InfoScreen from './pages/info';
 import ScheduleScreen from './pages/schedule';
+import ScheduleDetailsScreen from './pages/scheduledetails';
 
 import {
   createSwitchNavigator,
@@ -90,6 +91,7 @@ const AppTabNavigator = createBottomTabNavigator(
 
 const AppStackNavigator = createStackNavigator({
   AppTabNavigator: AppTabNavigator,
+  ScheduleDetailsScreen: ScheduleDetailsScreen,
 });
 
 const AppSwitchNavigator = createSwitchNavigator({
