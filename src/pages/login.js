@@ -1,11 +1,10 @@
 import React from 'react';
 import {
-  Button,
   Text,
   View,
   KeyboardAvoidingView,
   StyleSheet,
-  TouchableHighlight,
+  TouchableOpacity,
   Image,
   TextInput,
   Dimensions
@@ -57,13 +56,13 @@ class LoginScreen extends React.Component {
           {this.state.error.length !== 0 && (
             <Text style={styles.errormessage}>{this.state.error}</Text>
           )}
-          <TouchableHighlight
+          <TouchableOpacity
             style={styles.button}
             onPress={() => {
               this.props.navigation.navigate('Dashboard')
             }}>
             <Text style={styles.buttontext}>Entrar</Text>
-          </TouchableHighlight>
+          </TouchableOpacity>
         </KeyboardAvoidingView>
       </View>
     );

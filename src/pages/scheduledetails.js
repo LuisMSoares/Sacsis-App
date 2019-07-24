@@ -13,6 +13,7 @@ import {
 class ScheduleDetailsScreen extends Component {
   static navigationOptions = ({navigation}) => ({
     headerTitle: navigation.getParam('title',''),
+    //header: null,
   });
   
   state = {
@@ -52,6 +53,13 @@ class ScheduleDetailsScreen extends Component {
             </TouchableOpacity>
           )}
         />
+        <TouchableOpacity
+          style={styles.btnbottom}
+          onPress={() => 
+            this.props.navigation.navigate('QrCodeScannerScreen')
+          }>
+          <Text style={styles.buttontext}>Realizar Leitura</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -72,5 +80,22 @@ const styles = StyleSheet.create({
   },
   itemDetails: {
     fontSize: 12
+  },
+  btnbottom: {
+    padding: 20,
+    borderRadius: 5,
+    marginBottom: 10,
+    marginTop: 10,
+    marginHorizontal: 10,
+    borderColor: '#0f83a9',
+    borderWidth: 2,
+    alignSelf: 'stretch',
+    justifyContent: 'flex-end',
+  },
+  buttontext: {
+    color: '#0f83a9',
+    fontWeight: 'bold',
+    fontSize: 16,
+    textAlign: 'center',
   },
 });

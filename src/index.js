@@ -6,6 +6,7 @@ import LoginScreen from './pages/login';
 import InfoScreen from './pages/info';
 import ScheduleScreen from './pages/schedule';
 import ScheduleDetailsScreen from './pages/scheduledetails';
+import QrCodeScannerScreen from './pages/qrcodescanner';
 
 import {
   createSwitchNavigator,
@@ -92,6 +93,7 @@ const AppTabNavigator = createBottomTabNavigator(
 const AppStackNavigator = createStackNavigator({
   AppTabNavigator: AppTabNavigator,
   ScheduleDetailsScreen: ScheduleDetailsScreen,
+  QrCodeScannerScreen: QrCodeScannerScreen,
 });
 
 const AppSwitchNavigator = createSwitchNavigator({
