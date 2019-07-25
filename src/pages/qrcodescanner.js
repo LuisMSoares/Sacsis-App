@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     height: Dimensions.get('window').width / 1.3,
     marginBottom: Dimensions.get('window').height / 3.5,
     borderRadius: 20,
-    borderColor: '#0f83a9',
+    borderColor: 'white',
     borderWidth: 3,
     justifyContent: 'center',
   },
