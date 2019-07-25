@@ -9,7 +9,7 @@ class InfoScreen extends Component {
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Text style={{fontSize: 16}}>Meu Qr Code</Text>
         <QRCode
-          value="2749"
+          value="fW#2$4"
           size={200}
         />
       </View>

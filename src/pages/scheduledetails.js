@@ -13,10 +13,10 @@ import {
 class ScheduleDetailsScreen extends Component {
   static navigationOptions = ({navigation}) => ({
     headerTitle: navigation.getParam('title',''),
-    //header: null,
   });
   
   state = {
+    key: this.props.navigation.getParam('key',0),
     data: [
       {
         enrollment: 1000,
@@ -42,7 +42,7 @@ class ScheduleDetailsScreen extends Component {
           renderItem={({ item }) => (
             <TouchableOpacity 
               style={styles.flatlist}
-              onPress={() => Alert.alert('Chave: '+item.firstName)}
+              //onPress={() => Alert.alert('Chave: '+item.firstName)}
             >
               <Text style={styles.itemTitle}>
                 {item.enrollment +' - '+ item.firstName}
@@ -56,7 +56,9 @@ class ScheduleDetailsScreen extends Component {
         <TouchableOpacity
           style={styles.btnbottom}
           onPress={() => 
-            this.props.navigation.navigate('QrCodeScannerScreen')
+            this.props.navigation.navigate('QrCodeScannerScreen',{
+              key: this.state.key,
+            })
           }>
           <Text style={styles.buttontext}>Realizar Leitura</Text>
         </TouchableOpacity>

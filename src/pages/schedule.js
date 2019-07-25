@@ -12,12 +12,14 @@ class ScheduleScreen extends Component {
   state = {
     data: [
       {
+        key: 404,
         title: 'Introdução ao LaTeX',
         locate: 'PVA226',
         hourStart: '14:00',
         hourFinish: '15:40',
       },
       {
+        key: 304,
         title: 'Introdução ao Git',
         locate: 'PVA226',
         hourStart: '16:00',
@@ -34,7 +36,10 @@ class ScheduleScreen extends Component {
           renderItem={({ item }) => (
             <TouchableOpacity 
               style={styles.flatlist}
-              onPress={() => this.props.navigation.navigate('ScheduleDetailsScreen',{title: item.title})}
+              onPress={() => this.props.navigation.navigate('ScheduleDetailsScreen',{
+                key: item.key,
+                title: item.title
+              })}
             >
               <Text style={styles.itemTitle}>
                 {item.title}

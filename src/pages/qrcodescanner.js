@@ -5,13 +5,12 @@ import {
   Text,
   View,
   StyleSheet,
-  Button,
   Dimensions,
   Alert,
 } from 'react-native';
 
 
-export default class QrCodeScannerScreen extends Component {
+class QrCodeScannerScreen extends Component {
   static navigationOptions = () => ({
     header: null,
   });
@@ -62,8 +61,9 @@ export default class QrCodeScannerScreen extends Component {
 
   handleBarCodeScanned = ({ type, data }) => {
     this.setState({ scanned: true });
+    const key = this.props.navigation.getParam('key',0);
     Alert.alert(
-      'Tipo: '+type,
+      'Chave: '+key+' - Tipo: '+type,
       'Conteudo: '+data,
       [
         {text: 'OK', onPress: () => this.setState({ scanned: false })},
@@ -73,16 +73,16 @@ export default class QrCodeScannerScreen extends Component {
   };
 }
 
+export default QrCodeScannerScreen;
+
 const styles = StyleSheet.create({
   qrmarker: {
     width: Dimensions.get('window').width / 1.3,
     height: Dimensions.get('window').width / 1.3,
-    
     marginBottom: Dimensions.get('window').height / 3.5,
     borderRadius: 20,
     borderColor: '#0f83a9',
     borderWidth: 3,
-
     justifyContent: 'center',
   },
 });
