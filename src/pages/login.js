@@ -7,7 +7,8 @@ import {
   TouchableOpacity,
   Image,
   TextInput,
-  Dimensions
+  Dimensions,
+  Linking,
 } from 'react-native';
 
 class LoginScreen extends React.Component {
@@ -25,6 +26,9 @@ class LoginScreen extends React.Component {
   };
   handlePasswordChange = (password) => {
     this.setState({ password });
+  };
+  handleCreateAccountPress = () => {
+    Linking.openURL('https://app.sacsis.tech/entrar').catch(err => console.error('An error occurred', err));
   };
 
   render() {
@@ -62,6 +66,12 @@ class LoginScreen extends React.Component {
               this.props.navigation.navigate('Dashboard')
             }}>
             <Text style={styles.buttontext}>Entrar</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.singupbutton}
+            onPress={this.handleCreateAccountPress}
+          >
+            <Text style={styles.singuptext}>Cadastrar agora</Text>
           </TouchableOpacity>
         </KeyboardAvoidingView>
       </View>
@@ -105,6 +115,16 @@ const styles = StyleSheet.create({
   },
   buttontext: {
     color: '#FFF',
+    fontWeight: 'bold',
+    fontSize: 16,
+    textAlign: 'center',
+  },
+  singupbutton: {
+    padding: 10,
+    marginTop: 20,
+  },
+  singuptext: {
+    color: '#999',
     fontWeight: 'bold',
     fontSize: 16,
     textAlign: 'center',
