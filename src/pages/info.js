@@ -32,7 +32,7 @@ class InfoScreen extends Component {
         <Text style={{fontSize: 16}}>{ this.state.nome }</Text>
         {this.state.qrcode !== '' && (
           <QRCode
-            value={this.state.qrcode}
+            value={this.state.qrcode.toString()}
             size={200}
           />
         )}

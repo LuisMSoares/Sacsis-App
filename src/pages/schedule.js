@@ -18,7 +18,9 @@ class ScheduleScreen extends Component {
   };
   async componentDidMount() {
     const admin = await AsyncStorage.getItem('@UserData:admin');
-    this.setState({admin: true})
+    if (admin === '1') {
+      this.setState({admin: true});
+    }
     const response = await api.get('/schedule/?appvalues=1');
     if (response.status === 200) {
       this.setState({ data: response.data });
@@ -30,6 +32,9 @@ class ScheduleScreen extends Component {
     const response = await api.get('/schedule/?appvalues=1');
     if (response.status === 200) {
       this.setState({data: response.data});
+    } else {
+      const data = await AsyncStorage.getItem('@UserData:data');
+      this.setState({ data: data });
     }
     this.setState({refreshing: false});
   }

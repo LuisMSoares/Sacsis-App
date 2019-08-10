@@ -9,6 +9,8 @@ import {
   Alert,
 } from 'react-native';
 
+import api from '../services/api';
+
 
 class QrCodeScannerScreen extends Component {
   static navigationOptions = () => ({
@@ -59,12 +61,29 @@ class QrCodeScannerScreen extends Component {
     );
   }
 
-  handleBarCodeScanned = ({ type, data }) => {
+  handleBarCodeScanned = async ({ type, data }) => {
     this.setState({ scanned: true });
     const key = this.props.navigation.getParam('key',0);
+
+    let message = '';
+    let title = '';
+
+    const response = await api.post('/admin/presence', {
+      schedule_id: key,
+      user_id: data,
+    });
+    if (response.status === 201) {
+      title = 'Leitura realizada com sucesso!';
+      message = response.data.enrollment+' - '+response.data.firstname;
+      console.log(response.data);
+    } else {
+      title = 'Ops, aconteceu algum erro!';
+      message = response.data.message;
+    }
+
     Alert.alert(
-      'Chave: '+key+' - Tipo: '+type,
-      'Conteudo: '+data,
+      title,
+      message,
       [
         {text: 'OK', onPress: () => this.setState({ scanned: false })},
       ],

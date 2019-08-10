@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Alert } from 'react-native';
+import { View, Alert, AsyncStorage } from 'react-native';
 import Icon from '@expo/vector-icons/Ionicons';
 
 import LoginScreen from './pages/login';
@@ -77,7 +77,10 @@ const AppTabNavigator = createBottomTabNavigator(
                 //onPress: () => console.log('Retornando ao inicio'),
                 style: 'cancel',
               },
-              {text: 'Sim', onPress: () => navigation.navigate('Welcome')},
+              {text: 'Sim', onPress: async () => {
+                await AsyncStorage.removeItem('@UserData:token');
+                navigation.navigate('Welcome');
+              }},
             ],
             {cancelable: false},
           );

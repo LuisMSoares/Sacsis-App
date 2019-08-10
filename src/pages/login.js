@@ -19,13 +19,13 @@ class LoginScreen extends React.Component {
   };
 
   state = {
-    email: '',
-    password: '',
+    email: 'admin@admin.br',
+    password: 'admin',
     error: '',
   };
 
   async componentDidMount() {
-    const token = await AsyncStorage.getItem('@UserJWT:token');
+    const token = await AsyncStorage.getItem('@UserData:token');
     if (token !== null) {
       this.props.navigation.navigate('Dashboard');
     }
@@ -50,15 +50,16 @@ class LoginScreen extends React.Component {
 
       if (response.status === 200) {
         if (response.data.admin) {
-          AsyncStorage.setItem('@UserData:admin', response.data.admin);
+          await AsyncStorage.setItem('@UserData:admin', '1');
         }
-        AsyncStorage.setItem('@UserData:data', JSON.stringify(response.data.dados));
-        AsyncStorage.setItem('@UserData:token', response.data.jwt_token);
+        await AsyncStorage.setItem('@UserData:data', JSON.stringify(response.data.dados));
+        await AsyncStorage.setItem('@UserData:token', response.data.jwt_token);
         this.props.navigation.navigate('Dashboard');
       } else {
         this.setState({ error: response.data.message });
       }
     } catch (_err) {
+      console.log(_err);
       this.setState({ error: 'Erro de comunicação com o servidor!' });
     }
   };
@@ -94,9 +95,8 @@ class LoginScreen extends React.Component {
           )}
           <TouchableOpacity
             style={styles.button}
-            onPress={() => {
-              this.props.navigation.navigate('Dashboard')
-            }}>
+            onPress={() => { this._login() }}
+          >
             <Text style={styles.buttontext}>Entrar</Text>
           </TouchableOpacity>
           <TouchableOpacity
