@@ -1,4 +1,5 @@
 import React from 'react';
+import api from '../services/api';
 import {
   Text,
   View,
@@ -9,6 +10,7 @@ import {
   TextInput,
   Dimensions,
   Linking,
+  AsyncStorage,
 } from 'react-native';
 
 class LoginScreen extends React.Component {
@@ -21,6 +23,14 @@ class LoginScreen extends React.Component {
     password: '',
     error: '',
   };
+
+  async componentDidMount() {
+    const token = await AsyncStorage.getItem('@UserJWT:token');
+    if (token !== null) {
+      this.props.navigation.navigate('Dashboard');
+    }
+  }
+
   handleEmailChange = (email) => {
     this.setState({ email });
   };
@@ -29,6 +39,28 @@ class LoginScreen extends React.Component {
   };
   handleCreateAccountPress = () => {
     Linking.openURL('https://app.sacsis.tech/entrar').catch(err => console.error('An error occurred', err));
+  };
+
+  _login = async () => {
+    try {
+      const response = await api.post('/login?appvalues=1', {
+        login: this.state.email,
+        senha: this.state.password,
+      });
+
+      if (response.status === 200) {
+        if (response.data.admin) {
+          AsyncStorage.setItem('@UserData:admin', response.data.admin);
+        }
+        AsyncStorage.setItem('@UserData:data', JSON.stringify(response.data.dados));
+        AsyncStorage.setItem('@UserData:token', response.data.jwt_token);
+        this.props.navigation.navigate('Dashboard');
+      } else {
+        this.setState({ error: response.data.message });
+      }
+    } catch (_err) {
+      this.setState({ error: 'Erro de comunicação com o servidor!' });
+    }
   };
 
   render() {

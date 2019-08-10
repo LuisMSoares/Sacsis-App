@@ -3,7 +3,7 @@ import axios from 'axios';
 import { AsyncStorage } from 'react-native';
 
 const api = axios.create({
-  baseURL: 'http://localhost:5000',
+  baseURL: 'http://192.168.0.100:5000/api',
   validateStatus: function (status) {
     return status < 1000;
   }

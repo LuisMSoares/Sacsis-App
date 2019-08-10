@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import api from '../services/api';
 import {
   View,
   Text,
@@ -6,136 +7,66 @@ import {
   Dimensions,
   TouchableOpacity,
   SectionList,
+  AsyncStorage,
 } from 'react-native';
 
 class ScheduleScreen extends Component {
   state = {
-    data: [
-      {
-        data: [
-          {
-            key: 404,
-            title: 'Introdução ao LaTeX 1',
-            locate: 'PVA226',
-            hourStart: '14:00',
-            hourFinish: '15:40',
-          },
-          {
-            key: 304,
-            title: 'Introdução ao Git 1',
-            locate: 'PVA226',
-            hourStart: '16:00',
-            hourFinish: '17:40',
-          },
-        ],
-        title: 'Segunda-feira'
-      },
-      {
-        data: [
-          {
-            key: 405,
-            title: 'Introdução ao LaTeX 2',
-            locate: 'PVA226',
-            hourStart: '14:00',
-            hourFinish: '15:40',
-          },
-          {
-            key: 306,
-            title: 'Introdução ao Git 2',
-            locate: 'PVA226',
-            hourStart: '16:00',
-            hourFinish: '17:40',
-          },
-        ],
-        title: 'Terça-feira'
-      },
-      {
-        data: [
-          {
-            key: 505,
-            title: 'Introdução ao LaTeX 3',
-            locate: 'PVA226',
-            hourStart: '14:00',
-            hourFinish: '15:40',
-          },
-          {
-            key: 606,
-            title: 'Introdução ao Git 3',
-            locate: 'PVA226',
-            hourStart: '16:00',
-            hourFinish: '17:40',
-          },
-        ],
-        title: 'Quarta-feira'
-      },
-      {
-        data: [
-          {
-            key: 407,
-            title: 'Introdução ao LaTeX 4',
-            locate: 'PVA226',
-            hourStart: '14:00',
-            hourFinish: '15:40',
-          },
-          {
-            key: 308,
-            title: 'Introdução ao Git 4',
-            locate: 'PVA226',
-            hourStart: '16:00',
-            hourFinish: '17:40',
-          },
-        ],
-        title: 'Quinta-feira'
-      },
-      {
-        data: [
-          {
-            key: 506,
-            title: 'Introdução ao LaTeX 5',
-            locate: 'PVA226',
-            hourStart: '14:00',
-            hourFinish: '15:40',
-          },
-          {
-            key: 607,
-            title: 'Introdução ao Git 5',
-            locate: 'PVA226',
-            hourStart: '16:00',
-            hourFinish: '17:40',
-          },
-        ],
-        title: 'Sexta-feira'
-      },
-    ],
+    data: [],
+    refreshing: false,
+    admin: false,
   };
+  async componentDidMount() {
+    const admin = await AsyncStorage.getItem('@UserData:admin');
+    this.setState({admin: true})
+    const response = await api.get('/schedule/?appvalues=1');
+    if (response.status === 200) {
+      this.setState({ data: response.data });
+    }
+  }
+  
+  _onRefresh = async () => {
+    this.setState({refreshing: true});
+    const response = await api.get('/schedule/?appvalues=1');
+    if (response.status === 200) {
+      this.setState({data: response.data});
+    }
+    this.setState({refreshing: false});
+  }
 
   render() {
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <SectionList
+          refreshing={this.state.refreshing}
+          onRefresh={this._onRefresh}
           sections={this.state.data}
           renderItem={({ item }) => (
             <TouchableOpacity 
               style={styles.flatlist}
-              onPress={() => this.props.navigation.navigate('ScheduleDetailsScreen',{
-                key: item.key,
-                title: item.title
-              })}
+              onPress={() => {
+                if (this.state.admin) {
+                  this.props.navigation.navigate('ScheduleDetailsScreen',{
+                    key: item.id,
+                    title: item.titulo
+                  })
+                }
+              }}
             >
               <Text style={styles.itemTitle}>
-                {item.title}
+                {item.titulo}
               </Text>
               <Text style={styles.itemDetails}>
-                Local: {item.locate}    Horário: {item.hourStart} - {item.hourFinish}
+                Local: {item.local}    Horário: {item.data_inicio} - {item.data_fim}
               </Text>
             </TouchableOpacity>
           )}
           renderSectionHeader={({section}) => {
-            if (section.title === 'Segunda-feira') {
+            if (section.status === -1) {
               return <Text style={itemHeaderPassed}>{section.title}</Text>
-            } else if (section.title === 'Terça-feira') {
+            } else if (section.status === 0) {
               return <Text style={itemHeaderActive}>{section.title}</Text>
-            } else {
+            } else if (section.status === 1) {
               return <Text style={itemHeaderWaiting}>{section.title}</Text>
             }
           }}
